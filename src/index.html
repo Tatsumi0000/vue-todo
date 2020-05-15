@@ -5,26 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vue.js ToDo</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <div id="app">
         <ul>
-            {{ json_datas.todos }}
+            <!-- {{ json_datas }} -->
+            <ul>
+                <li v-for="json_data in json_datas.data.todos">
+                    {{ json_data.contents }}
+                    {{json_data.date}}
+                    <button @click="deleteJsonFile">
+                        削除
+                    </button>
+                </li>
+            </ul>
+            <!-- {{ json_datas.todos.date }}
+            {{ console.log(json_datas) }} -->
             <!-- <li v-for="json_data in json_datas.todos">
                 {{ json_data }}
             </li> -->
         </ul>
-        <button @click="readJsonFile">
+        <!-- <button @click="readJsonFile">
             ボタン
-        </button>
-        {{ content }}
-        <!-- (2) (1)で用意したnameを表示してみましょう -->
-        {{ date }}
+        </button> -->
     </div>
 
     <script>
+        // import datas from './../datas/datas.json'
         // import json_data from '../datas/datas.json'
         const app = new Vue({
             el: '#app',
@@ -37,27 +47,30 @@
                     json_datas: []
                 }
             },
-            async mounted() {
-                this.json_datas = await this.readJsonFile()
+            mounted() {
+                this.readJsonFile()
             },
             methods: {
                 // Jsonファイルを読み込むメソッド
-                async readJsonFile() {
-                    const xmlHttp = new XMLHttpRequest()
-                    xmlHttp.open('GET', this.file_path, true)
-                    xmlHttp.send(null)
-                    xmlHttp.onload = function () {
-                        json_text = xmlHttp.responseText
-                        json_datas = JSON.parse(json_text)
-                        console.log(json_datas)
-                        console.log(json_datas.todos[0].contents)
-                        return json_datas
-                    }
+                readJsonFile() {
+                    this.json_datas = axios.get(this.file_path).then(response => (this.json_datas = response))
+                    // var json_datas = []
+                    // const xmlHttp = new XMLHttpRequest()
+                    // xmlHttp.open('GET', this.file_path)
+                    // xmlHttp.send(null)
+                    // xmlHttp.onload = function () {
+                    //     json_text = xmlHttp.responseText
+                    //     json_datas = JSON.parse(json_text)
+                    //     console.log(json_datas)
+                    //     console.log(json_datas.todos[0].contents)
+                    //     return json_datas
+                    // }
 
                 },
                 // ToDoを削除するときに対応する箇所のJsonファイルを削除するメソッド
-                deleteJsonFile() {
-
+                deleteJsonFile(num) {
+                    delete this.json_datas[num]
+                    const file = JSON.stringify(this.json_datas)
                 },
                 // Jsonファイルに保存するメソッド
                 saveJsonFile() {
