@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newcomer training</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{ content }}
+    </div>
+    <script>
+        import json_data from '../datas/datas.json'
+        const app = new Vue({
+            el: '#app',
+            data: {
+                content: 'aaaa',
+                date: '',
+                todos: json_data
+            },
+            methods: {
+                // Jsonファイルを読み込むメソッド
+                readJsonFile() {
+                    // 読み込む処理
+                    const jsonFile =
+                        this.todos = [] // Jsonファイルのデータを代入
+                },
+                // ToDoを削除するときに対応する箇所のJsonファイルを削除するメソッド
+                deleteJsonFile() {
+
+                },
+                // Jsonファイルに保存するメソッド
+                saveJsonFile() {
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
